@@ -6,6 +6,7 @@ import android.view.View
 import android.widget.Button
 import android.widget.ListView
 import android.widget.TextView
+import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_main.*
 import androidx.core.view.forEach as forEach1
 
@@ -29,21 +30,25 @@ class MainActivity : AppCompatActivity() {
         }
 
         if (buttonView != null) {
-            buttonView.setOnClickListener(object : View.OnClickListener {
-                override fun onClick(v: View?) {
-                    for (i in 0..listMyDataClass.size-1) {
-                        println(listMyDataClass.get(i). toString())
-                    }
-                }
-            })
+            buttonView.setOnClickListener {view ->
+                viewMyDataClass(listMyDataClass)
+            }
         }
+
     }
 
     fun createMyDataClass(name: String, number: Int): MyDataClass{
         return MyDataClass(name, number)
     }
 
-    data class MyDataClass(private var name: String, private val number: Int){
+    fun viewMyDataClass(listMyDataClass: ArrayList<MyDataClass>) {
+        for (i in 0..listMyDataClass.size-1) {
+            listMyDataClass.get(i).toString()
+            println(listMyDataClass.get(i). toString())
+        }
+    }
+
+    data class MyDataClass(private val name: String, private var number: Int){
 
     }
 }
