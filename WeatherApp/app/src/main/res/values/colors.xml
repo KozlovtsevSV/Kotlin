@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorWeatherСloud">#7ed3b2</color>
+    <color name="colorWeatherSunny">#7ed3b2</color>
+    <color name="colorWeatherRain">#7ed3b2</color>
+    <color name="colorWeatherSnowly">#7ed3b2</color>
+
+    <color name="colorCity">#ffffff</color>
+    <color name="colorDate">#ffffff</color>
+    <color name="colorPrimary">#6200EE</color>
+    <color name="colorPrimaryDark">#3700B3</color>
+    <color name="colorAccent">#03DAC5</color>
+</resources>
