@@ -7,12 +7,9 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.example.weatherapp.R
 import com.example.weatherapp.databinding.WeatherFragmentBinding
-import com.example.weatherapp.Weather
-import com.example.weatherapp.AppState
-import com.example.weatherapp.MainViewModel
 import com.google.android.material.snackbar.Snackbar
+
 
 class WeatherFragment : Fragment() {
 
@@ -33,6 +30,25 @@ class WeatherFragment : Fragment() {
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
         viewModel.getLiveData().observe(viewLifecycleOwner, Observer { renderData(it) })
         viewModel.getWeatherFromLocalSource()
+        _binding?.buttonUpDate?.setOnClickListener({view ->
+            viewModel.getWeatherFromLocalSource()
+        })
+        _binding?.buttonSettings?.setOnClickListener({view ->
+
+            if (savedInstanceState == null) {
+
+                val bundle = Bundle()
+                //bundle.putParcelable(WeatherSettings.BUNDLE_EXTRA, weather)
+                val manager = activity?.supportFragmentManager
+                manager?.beginTransaction()
+                    ?.add(R.id.container, WeatherSettings.newInstance())
+                    ?.addToBackStack("")
+                    ?.commitAllowingStateLoss()
+            }
+
+            viewModel.getWeatherFromLocalSource()
+        })
+
     }
 
     private fun renderData(appState: AppState) {
@@ -40,7 +56,7 @@ class WeatherFragment : Fragment() {
             is AppState.Success -> {
                 val weatherData = appState.weatherData
                 binding.loadingLayout.visibility = View.GONE
-                setData(weatherData)
+                setData(weatherData.get(1))
             }
             is AppState.Loading -> {
                 binding.loadingLayout.visibility = View.VISIBLE
@@ -64,7 +80,7 @@ class WeatherFragment : Fragment() {
         )
         binding.temperature.text = String.format(
             getString(R.string.temperature), weatherData.temperature.toString())
-        binding.descrizioneWeather.text = weatherData.descrizioneWeather
+        binding.descrizioneWeather.text = weatherData.descrizioneWeather.toString()
     }
 
     override fun onDestroyView() {
