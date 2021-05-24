@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Погода</string>
+    <string name="city_name">Новосибирск</string>
+    <string name="date_value">Вт, 18 Мая 2021</string>
+    <string name="descrizioneWeather">Облачно</string>
+    <string name="temperature">%s°C</string>
+    <string name="error">Error</string>
+    <string name="reload">Reload</string>
+    <string name="city_coordinates">Широта/Долгота: %s, %s"</string>
+</resources>
