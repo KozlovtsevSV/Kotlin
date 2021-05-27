@@ -10,7 +10,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.weatherapp.databinding.FragmentWeatherSettingsBinding
 import com.google.android.material.snackbar.Snackbar
 
-class WeatherSettings : Fragment() {
+class WeatherSettingsFragment : Fragment() {
 
     private var _binding: FragmentWeatherSettingsBinding? = null
     private val binding get() = _binding!!
@@ -29,37 +29,36 @@ class WeatherSettings : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.mainFragmentRecyclerView.adapter = adapter
-        binding.mainFragmentFAB.setOnClickListener { changeWeatherDataSet() }
+        binding.weatherSettingsFragmentRecyclerView.adapter = adapter
+        binding.weatherSettingsFragmentFAB.setOnClickListener { changeWeatherDataSet() }
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
         viewModel.getLiveData().observe(viewLifecycleOwner, Observer { renderData(it) })
         viewModel.getWeatherFromLocalSource()//getWeatherFromLocalSourceRus()
     }
 
     private fun changeWeatherDataSet() {
-        if (isDataSetRus) {
-            viewModel.getWeatherFromLocalSource()// getWeatherFromLocalSourceWorld()
-            binding.mainFragmentFAB.setImageResource(R.drawable.ic_earth)
-        } else {
-            viewModel.getWeatherFromLocalSource()//getWeatherFromLocalSourceRus()
-            binding.mainFragmentFAB.setImageResource(R.drawable.ic_russia)
-        }
         isDataSetRus = !isDataSetRus
+        if (! isDataSetRus) {
+            binding.weatherSettingsFragmentFAB.setImageResource(R.drawable.ic_earth)
+        } else {
+            binding.weatherSettingsFragmentFAB.setImageResource(R.drawable.ic_russia)
+        }
+        viewModel.getWeatherFromLocalSource(isDataSetRus)
     }
 
     private fun renderData(appState: AppState) {
         when (appState) {
             is AppState.Success -> {
-                binding.mainFragmentLoadingLayout.visibility = View.GONE
+                binding.weatherSettingsFragmentLoadingLayout.visibility = View.GONE
                 adapter.setWeather(appState.weatherData)
             }
             is AppState.Loading -> {
-                binding.mainFragmentLoadingLayout.visibility = View.VISIBLE
+                binding.weatherSettingsFragmentLoadingLayout.visibility = View.VISIBLE
             }
             is AppState.Error -> {
-                binding.mainFragmentLoadingLayout.visibility = View.GONE
+                binding.weatherSettingsFragmentLoadingLayout.visibility = View.GONE
                 Snackbar
-                    .make(binding.mainFragmentFAB, getString(R.string.error), Snackbar.LENGTH_INDEFINITE)
+                    .make(binding.weatherSettingsFragmentFAB, getString(R.string.error), Snackbar.LENGTH_INDEFINITE)
                     .setAction(getString(R.string.reload)) { viewModel.getWeatherFromLocalSource()}//getWeatherFromLocalSourceRus() }
                     .show()
             }
@@ -67,7 +66,6 @@ class WeatherSettings : Fragment() {
     }
 
     companion object {
-        fun newInstance() =
-            WeatherSettings()
+        fun newInstance() = WeatherSettingsFragment()
     }
 }

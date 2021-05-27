@@ -30,24 +30,22 @@ class WeatherFragment : Fragment() {
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
         viewModel.getLiveData().observe(viewLifecycleOwner, Observer { renderData(it) })
         viewModel.getWeatherFromLocalSource()
-        _binding?.buttonUpDate?.setOnClickListener({view ->
+        _binding?.buttonUpDate?.setOnClickListener { view ->
             viewModel.getWeatherFromLocalSource()
-        })
-        _binding?.buttonSettings?.setOnClickListener({view ->
+        }
 
-            if (savedInstanceState == null) {
-
+        _binding?.buttonSettings?.setOnClickListener { view ->
+            val manager = activity?.supportFragmentManager
+            if (manager != null) {
                 val bundle = Bundle()
                 //bundle.putParcelable(WeatherSettings.BUNDLE_EXTRA, weather)
-                val manager = activity?.supportFragmentManager
-                manager?.beginTransaction()
-                    ?.add(R.id.container, WeatherSettings.newInstance())
-                    ?.addToBackStack("")
-                    ?.commitAllowingStateLoss()
+                manager.beginTransaction()
+                    .replace(R.id.container, WeatherSettingsFragment.newInstance())
+                    .addToBackStack("")
+                    .commitAllowingStateLoss()
             }
-
-            viewModel.getWeatherFromLocalSource()
-        })
+            //viewModel.getWeatherFromLocalSource()
+        }
 
     }
 

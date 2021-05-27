@@ -12,7 +12,6 @@ class WeatherFragmentSettingsAdapter :
     RecyclerView.Adapter<WeatherFragmentSettingsAdapter.MainViewHolder>() {
 
     private var weatherData: List<Weather> = listOf()
-    //private var _binding: WeatherFragmentBinding? = null
 
     fun setWeather(data: List<Weather>) {
         weatherData = data
@@ -40,8 +39,6 @@ class WeatherFragmentSettingsAdapter :
     inner class MainViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
         fun bind(weather: Weather) {
-
-            //_binding
             itemView.findViewById<TextView>(R.id.mainFragmentRecyclerItemTextView).text = weather.city.cityName
             itemView.setOnClickListener {
                 Toast.makeText(
