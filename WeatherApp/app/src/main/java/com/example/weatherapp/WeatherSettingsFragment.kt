@@ -10,14 +10,14 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.weatherapp.databinding.FragmentWeatherSettingsBinding
 import com.google.android.material.snackbar.Snackbar
 
-class WeatherSettingsFragment : Fragment() {
+class WeatherSettingsFragment() : Fragment() {
 
     private var _binding: FragmentWeatherSettingsBinding? = null
     private val binding get() = _binding!!
 
     private lateinit var viewModel: MainViewModel
     private val adapter = WeatherFragmentSettingsAdapter()
-    private var isDataSetRus: Boolean = true
+    private var isDataSetRus: Boolean = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -33,17 +33,23 @@ class WeatherSettingsFragment : Fragment() {
         binding.weatherSettingsFragmentFAB.setOnClickListener { changeWeatherDataSet() }
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
         viewModel.getLiveData().observe(viewLifecycleOwner, Observer { renderData(it) })
-        viewModel.getWeatherFromLocalSource()//getWeatherFromLocalSourceRus()
+        viewModel.getWeatherFromLocalSource()
+        isDataSetRus = viewModel.isRussian
+        drawIcon()
     }
 
     private fun changeWeatherDataSet() {
         isDataSetRus = !isDataSetRus
+        drawIcon()
+        viewModel.getWeatherFromLocalSource()
+    }
+
+    private fun drawIcon(){
         if (! isDataSetRus) {
             binding.weatherSettingsFragmentFAB.setImageResource(R.drawable.ic_earth)
         } else {
             binding.weatherSettingsFragmentFAB.setImageResource(R.drawable.ic_russia)
         }
-        viewModel.getWeatherFromLocalSource(isDataSetRus)
     }
 
     private fun renderData(appState: AppState) {
@@ -51,7 +57,7 @@ class WeatherSettingsFragment : Fragment() {
             is AppState.Success -> {
                 binding.weatherSettingsFragmentLoadingLayout.visibility = View.GONE
                 adapter.setWeather(appState.weatherData)
-            }
+             }
             is AppState.Loading -> {
                 binding.weatherSettingsFragmentLoadingLayout.visibility = View.VISIBLE
             }
@@ -59,7 +65,7 @@ class WeatherSettingsFragment : Fragment() {
                 binding.weatherSettingsFragmentLoadingLayout.visibility = View.GONE
                 Snackbar
                     .make(binding.weatherSettingsFragmentFAB, getString(R.string.error), Snackbar.LENGTH_INDEFINITE)
-                    .setAction(getString(R.string.reload)) { viewModel.getWeatherFromLocalSource()}//getWeatherFromLocalSourceRus() }
+                    .setAction(getString(R.string.reload)) { viewModel.getWeatherFromLocalSource()}
                     .show()
             }
         }

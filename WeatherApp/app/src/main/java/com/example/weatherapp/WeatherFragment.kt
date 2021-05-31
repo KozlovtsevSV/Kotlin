@@ -29,7 +29,9 @@ class WeatherFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
         viewModel.getLiveData().observe(viewLifecycleOwner, Observer { renderData(it) })
+
         viewModel.getWeatherFromLocalSource()
+
         _binding?.buttonUpDate?.setOnClickListener { view ->
             viewModel.getWeatherFromLocalSource()
         }
@@ -54,7 +56,7 @@ class WeatherFragment : Fragment() {
             is AppState.Success -> {
                 val weatherData = appState.weatherData
                 binding.loadingLayout.visibility = View.GONE
-                setData(weatherData.get(1))
+                setData(weatherData.get(viewModel.currentIndexWeather))
             }
             is AppState.Loading -> {
                 binding.loadingLayout.visibility = View.VISIBLE

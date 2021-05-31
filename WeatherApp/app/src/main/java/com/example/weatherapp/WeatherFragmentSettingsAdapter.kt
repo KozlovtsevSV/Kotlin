@@ -5,10 +5,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
-import com.example.weatherapp.databinding.WeatherFragmentBinding
 
-class WeatherFragmentSettingsAdapter :
+class WeatherFragmentSettingsAdapter() :
     RecyclerView.Adapter<WeatherFragmentSettingsAdapter.MainViewHolder>() {
 
     private var weatherData: List<Weather> = listOf()
@@ -40,6 +40,8 @@ class WeatherFragmentSettingsAdapter :
 
         fun bind(weather: Weather) {
             itemView.findViewById<TextView>(R.id.mainFragmentRecyclerItemTextView).text = weather.city.cityName
+
+
             itemView.setOnClickListener {
                 Toast.makeText(
                     itemView.context,
