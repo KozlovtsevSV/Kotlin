@@ -9,7 +9,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
-                .replace(R.id.container, WeatherFragment.newInstance())
+                .replace(R.id.container, WeatherFragment.newInstance(null))
                 //.replace(R.id.container, WeatherSettingsFragment.newInstance())
                 .commitNow()
         }

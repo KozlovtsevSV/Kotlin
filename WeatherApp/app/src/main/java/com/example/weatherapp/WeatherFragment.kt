@@ -15,6 +15,7 @@ class WeatherFragment : Fragment() {
 
     private var _binding: WeatherFragmentBinding? = null
     private val binding get() = _binding!!
+
     private lateinit var viewModel: MainViewModel
 
     override fun onCreateView(
@@ -89,6 +90,13 @@ class WeatherFragment : Fragment() {
     }
 
     companion object {
-        fun newInstance() = WeatherFragment()
+        const val BUNDLE_EXTRA = "weather"
+
+        fun newInstance(bundle: Bundle?): WeatherFragment {
+            val fragment = WeatherFragment()
+            
+            fragment.arguments = bundle
+            return fragment
+        }
     }
 }

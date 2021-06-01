@@ -15,9 +15,30 @@ class WeatherSettingsFragment() : Fragment() {
     private var _binding: FragmentWeatherSettingsBinding? = null
     private val binding get() = _binding!!
 
+    interface OnItemViewClickListener {
+        fun onItemViewClick(weather: Weather)
+    }
+
     private lateinit var viewModel: MainViewModel
-    private val adapter = WeatherFragmentSettingsAdapter()
     private var isDataSetRus: Boolean = false
+    private val adapter = WeatherFragmentSettingsAdapter(object : OnItemViewClickListener {
+        override fun onItemViewClick(weather: Weather) {
+            val manager = activity?.supportFragmentManager
+            if (manager != null) {
+                val bundle = Bundle()
+                bundle.putParcelable(WeatherFragment.BUNDLE_EXTRA, weather)
+                manager.beginTransaction()
+                    .add(R.id.container, WeatherFragment.newInstance(bundle))
+                    .addToBackStack("")
+                    .commitAllowingStateLoss()
+            }
+        }
+    })
+
+    override fun onDestroy() {
+        adapter.removeListener()
+        super.onDestroy()
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -56,7 +77,7 @@ class WeatherSettingsFragment() : Fragment() {
         when (appState) {
             is AppState.Success -> {
                 binding.weatherSettingsFragmentLoadingLayout.visibility = View.GONE
-                adapter.setWeather(appState.weatherData)
+                adapter.setWeather(appState.weatherData, viewModel)
              }
             is AppState.Loading -> {
                 binding.weatherSettingsFragmentLoadingLayout.visibility = View.VISIBLE

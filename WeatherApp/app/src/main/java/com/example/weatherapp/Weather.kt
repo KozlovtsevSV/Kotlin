@@ -1,10 +1,14 @@
 package com.example.weatherapp
 
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
+
+@Parcelize
 data class Weather (
     val city: City = getDefaultCity(),
     val temperature: Int  = (0..42).random(),
-     val descrizioneWeather: ВescrizioneWeather = randomВescrizioneWeather()
-)
+    val descrizioneWeather: ВescrizioneWeather = randomВescrizioneWeather()
+    ): Parcelable
 
 enum class ВescrizioneWeather{
     CLOUDY{ override fun toString() = "Облачно"},

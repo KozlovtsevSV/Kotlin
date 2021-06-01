@@ -1,7 +1,11 @@
 package com.example.weatherapp
 
-    data class City(
-        val cityName: String,
-        val latitude: Double,
-        val longitude: Double
-    )
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
+
+@Parcelize
+data class City(
+    val cityName: String,
+    val latitude: Double,
+    val longitude: Double
+    ): Parcelable

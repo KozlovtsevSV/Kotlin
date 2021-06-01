@@ -8,13 +8,19 @@ import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 
-class WeatherFragmentSettingsAdapter() :
+class WeatherFragmentSettingsAdapter(private var onItemViewClickListener: WeatherSettingsFragment.OnItemViewClickListener?) :
     RecyclerView.Adapter<WeatherFragmentSettingsAdapter.MainViewHolder>() {
 
     private var weatherData: List<Weather> = listOf()
+    private lateinit var viewModel: MainViewModel
 
-    fun setWeather(data: List<Weather>) {
+    fun removeListener() {
+        onItemViewClickListener = null
+    }
+
+    fun setWeather(data: List<Weather>, viewModel: MainViewModel) {
         weatherData = data
+        this.viewModel = viewModel
         notifyDataSetChanged()
     }
 
@@ -40,14 +46,17 @@ class WeatherFragmentSettingsAdapter() :
 
         fun bind(weather: Weather) {
             itemView.findViewById<TextView>(R.id.mainFragmentRecyclerItemTextView).text = weather.city.cityName
-
-
+            itemView.setOnClickListener {
+                onItemViewClickListener?.onItemViewClick(weather)
+            }
             itemView.setOnClickListener {
                 Toast.makeText(
                     itemView.context,
                     weather.city.cityName,
                     Toast.LENGTH_LONG
                 ).show()
+                //viewModel.currentIndexWeather = adapterPosition
+                //WeatherFragment.newInstance().
             }
         }
     }
