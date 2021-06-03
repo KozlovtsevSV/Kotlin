@@ -6,5 +6,7 @@
     <string name="temperature">%s°C</string>
     <string name="error">Error</string>
     <string name="reload">Reload</string>
-    <string name="city_coordinates">Широта/Долгота: %s, %s"</string>
+    <string name="city_coordinates">Широта/Долгота:%n %s, %s"</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

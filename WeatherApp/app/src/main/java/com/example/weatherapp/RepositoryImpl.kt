@@ -2,11 +2,10 @@ package com.example.weatherapp
 
 class RepositoryImpl : Repository {
 
-    override fun getWeatherFromServer(): Weather {
-        return Weather()
-    }
+    override fun getWeatherFromServer() = Weather()
 
-    override fun getWeatherFromLocalStorage(): Weather {
-        return Weather()
-    }
+    override fun getWeatherFromLocalStorageRus() = getRussianCities()
+
+    override fun getWeatherFromLocalStorageWorld() = getWorldCities()
+
 }
